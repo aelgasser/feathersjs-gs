@@ -1,7 +1,8 @@
 var Todo = (function () {
-    function Todo(id, text) {
+    function Todo(id, text, done) {
         this.id = id;
         this.text = text;
+        this.done = done;
     }
     return Todo;
 })();

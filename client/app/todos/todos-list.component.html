@@ -1,0 +1,9 @@
+<h2>Todos</h2>
+
+<todos-add></todos-add>
+
+<ul>
+    <li *ngFor="#todo of todos">
+        <todo-render [todo]="todo"></todo-render>
+    </li>
+</ul>

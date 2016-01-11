@@ -1,33 +1,16 @@
 import { Component } from 'angular2/core';
-import { Todo } from './todo';
-import { TodosService } from './todos.service';
+import { RouteConfig, ROUTER_DIRECTIVES } from 'angular2/router';
+import { TodosListComponent } from './todos-list.component';
 
 @Component({
-    selector: 'todos',
-    templateUrl: 'app/todos/todos.component.html'
+    template:`
+    <router-outlet></router-outlet>
+    `,
+    directives: [ROUTER_DIRECTIVES]
 })
+@RouteConfig([
+    { path: '/', name: 'Todos', component: TodosListComponent, useAsDefault: true }
+])
 export class TodosComponent {
-    // properties declaration
-    public todos: Todo[] = [];
 
-    constructor(
-        private _todosService: TodosService
-    ) { }
-
-    ngOnInit() {
-        this._initProperties();
-        this._todosService.socketListenOnCreate();
-
-        // this.todosSocket.create({
-        //     text: 'Created from client'
-        // });
-    }
-
-    private _initProperties() {
-        this._todosService.todosSubject
-            .subscribe(
-            todos => { this.todos = todos }
-        );
-        this._todosService.getTodos();
-    }
-}
+ }

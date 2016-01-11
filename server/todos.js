@@ -6,7 +6,8 @@ var Todos = (function () {
         this._todos = [
             {
                 id: 0,
-                text: 'First Todo'
+                text: 'First Todo',
+                done: true
             }
         ];
     }
@@ -45,6 +46,7 @@ var Todos = (function () {
         // Increment the global ID counter and
         // use it as the Todo id
         data.id = this._id++;
+        data.done = false;
         this._todos.push(data);
         callback(null, data);
     };

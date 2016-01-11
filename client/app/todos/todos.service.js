@@ -13,8 +13,9 @@ var TodosService = (function () {
     function TodosService() {
         this._socket = io();
         this._app = feathers().configure(feathers.socketio(this._socket));
-        this._todoSocket = this._app.service('todos');
+        this._todoSocket = this._app.service('todosController');
         this.todosSubject = new Rx.Subject();
+        this.currentTodo = new Rx.Subject();
     }
     TodosService.prototype.getTodos = function () {
         var _this = this;
@@ -22,10 +23,45 @@ var TodosService = (function () {
             _this.todosSubject.next(todos);
         });
     };
+    TodosService.prototype.getTodo = function (id) {
+        var _this = this;
+        this._todoSocket.get(id, {}, function (err, todo) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                _this.currentTodo.next(todo);
+            }
+        });
+    };
+    TodosService.prototype.socketListenOnPatched = function (id) {
+        var _this = this;
+        this._todoSocket.on('patched', function (todo) {
+            console.log('patched');
+            _this.getTodo(todo.id);
+        });
+    };
     TodosService.prototype.socketListenOnCreate = function () {
         var _this = this;
         this._todoSocket.on('created', function (todo) {
+            console.log('created');
             _this.getTodos();
+        });
+    };
+    TodosService.prototype.create = function (text) {
+        this._todoSocket.create({
+            text: text
+        });
+    };
+    TodosService.prototype.patch = function (todo) {
+        var _this = this;
+        this._todoSocket.patch(todo.id, todo, {}, function (err, todo) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                _this.getTodo(todo.id);
+            }
         });
     };
     TodosService = __decorate([

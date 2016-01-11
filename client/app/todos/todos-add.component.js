@@ -8,17 +8,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('angular2/core');
-var TodosFormComponent = (function () {
-    function TodosFormComponent() {
+var todos_service_1 = require('./todos.service');
+var TodosAddComponent = (function () {
+    function TodosAddComponent(_todosService) {
+        this._todosService = _todosService;
     }
-    TodosFormComponent = __decorate([
+    TodosAddComponent.prototype.onSubmit = function (todo) {
+        if (todo.value !== '') {
+            this._todosService.create(todo.value);
+            todo.value = '';
+        }
+    };
+    TodosAddComponent = __decorate([
         core_1.Component({
-            selector: 'todos-form',
-            templateUrl: 'app/todos/todos-form.component.html'
+            selector: 'todos-add',
+            templateUrl: 'app/todos/todos-add.component.html'
         }), 
-        __metadata('design:paramtypes', [])
-    ], TodosFormComponent);
-    return TodosFormComponent;
+        __metadata('design:paramtypes', [todos_service_1.TodosService])
+    ], TodosAddComponent);
+    return TodosAddComponent;
 })();
-exports.TodosFormComponent = TodosFormComponent;
-//# sourceMappingURL=todos-form.component.js.map
+exports.TodosAddComponent = TodosAddComponent;
+//# sourceMappingURL=todos-add.component.js.map

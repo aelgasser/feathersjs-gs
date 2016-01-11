@@ -7,7 +7,8 @@ export class Todos {
     private _todos: Todo[] = [
         {
             id: 0,
-            text: 'First Todo'
+            text: 'First Todo',
+            done: true
         }
     ];
 
@@ -47,6 +48,7 @@ export class Todos {
         // Increment the global ID counter and
         // use it as the Todo id
         data.id = this._id++;
+        data.done = false;
         this._todos.push(data);
         callback(null, data);
     }
