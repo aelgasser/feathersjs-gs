@@ -15,7 +15,6 @@ var TodosService = (function () {
         this._app = feathers().configure(feathers.socketio(this._socket));
         this._todoSocket = this._app.service('todosController');
         this.todosSubject = new Rx.Subject();
-        this.currentTodo = new Rx.Subject();
     }
     TodosService.prototype.getTodos = function () {
         var _this = this;
@@ -30,15 +29,17 @@ var TodosService = (function () {
                 console.log(err);
             }
             else {
+                console.log(todo);
                 _this.currentTodo.next(todo);
             }
         });
     };
-    TodosService.prototype.socketListenOnPatched = function (id) {
+    TodosService.prototype.socketListenOnPatched = function () {
         var _this = this;
         this._todoSocket.on('patched', function (todo) {
-            console.log('patched');
-            _this.getTodo(todo.id);
+            // console.log('patched');
+            // this.getTodo(todo.id);
+            _this.getTodos();
         });
     };
     TodosService.prototype.socketListenOnCreate = function () {
@@ -48,19 +49,39 @@ var TodosService = (function () {
             _this.getTodos();
         });
     };
+    TodosService.prototype.socketListenOnRemove = function () {
+        var _this = this;
+        this._todoSocket.on('removed', function (todo) {
+            _this.getTodos();
+        });
+    };
     TodosService.prototype.create = function (text) {
         this._todoSocket.create({
-            text: text
+            text: text,
+            done: false
+        }, {}, function (err, todo) {
+            if (err) {
+                console.log(err);
+            }
         });
     };
     TodosService.prototype.patch = function (todo) {
-        var _this = this;
         this._todoSocket.patch(todo.id, todo, {}, function (err, todo) {
+            // if (err) {
+            //     console.log(err);
+            // } else {
+            //     this.getTodo(todo.id);
+            // }
+        });
+    };
+    TodosService.prototype.remove = function (id) {
+        var _this = this;
+        this._todoSocket.remove(id, {}, function (err, todo) {
             if (err) {
                 console.log(err);
             }
             else {
-                _this.getTodo(todo.id);
+                _this.getTodos();
             }
         });
     };

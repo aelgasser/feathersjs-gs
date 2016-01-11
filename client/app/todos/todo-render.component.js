@@ -14,14 +14,19 @@ var TodoRenderComponent = (function () {
         this._todosService = _todosService;
     }
     TodoRenderComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this._todosService.currentTodo.subscribe(function (todo) { _this.todo = todo; console.log(todo); }, function (err) { return console.log(err); });
-        this._todosService.getTodo(this.todo.id);
-        this._todosService.socketListenOnPatched(this.todo.id);
+        // this._todosService.currentTodo.subscribe(
+        //     todo => { console.log(todo); },
+        //     err => console.log(err)
+        // );
+        // this._todosService.getTodo(this.todo.id);
+        // this._todosService.socketListenOnPatched(this.todo.id);
     };
     TodoRenderComponent.prototype.toggleDone = function () {
         this.todo.done = !this.todo.done;
         this._todosService.patch(this.todo);
+    };
+    TodoRenderComponent.prototype.onRemove = function () {
+        this._todosService.remove(this.todo.id);
     };
     TodoRenderComponent = __decorate([
         core_1.Component({

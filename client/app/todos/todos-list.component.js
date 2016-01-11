@@ -20,6 +20,8 @@ var TodosListComponent = (function () {
     TodosListComponent.prototype.ngOnInit = function () {
         this._initProperties();
         this._todosService.socketListenOnCreate();
+        this._todosService.socketListenOnPatched();
+        this._todosService.socketListenOnRemove();
         // this.todosSocket.create({
         //     text: 'Created from client'
         // });
@@ -27,7 +29,7 @@ var TodosListComponent = (function () {
     TodosListComponent.prototype._initProperties = function () {
         var _this = this;
         this._todosService.todosSubject
-            .subscribe(function (todos) { _this.todos = todos; });
+            .subscribe(function (todos) { _this.todos = todos; console.log(_this.todos); });
         this._todosService.getTodos();
     };
     TodosListComponent = __decorate([

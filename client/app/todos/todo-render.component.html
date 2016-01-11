@@ -1,1 +1,3 @@
-{{todo | json}} <input type="checkbox" [checked]="todo.done" (click)="toggleDone()">
+<span [class.done]="todo.done">{{todo | json}}</span>
+<input type="checkbox" [checked]="todo.done" (click)="toggleDone()">
+<button (click)="onRemove()">Remove</button>

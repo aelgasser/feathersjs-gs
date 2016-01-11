@@ -15,16 +15,20 @@ export class TodoRenderComponent {
     ) { }
 
     ngOnInit() {
-        this._todosService.currentTodo.subscribe(
-            todo => { this.todo = todo; console.log(todo); },
-            err => console.log(err)
-        );
-        this._todosService.getTodo(this.todo.id);
-        this._todosService.socketListenOnPatched(this.todo.id);
+        // this._todosService.currentTodo.subscribe(
+        //     todo => { console.log(todo); },
+        //     err => console.log(err)
+        // );
+        // this._todosService.getTodo(this.todo.id);
+        // this._todosService.socketListenOnPatched(this.todo.id);
     }
 
     toggleDone() {
         this.todo.done = !this.todo.done;
         this._todosService.patch(this.todo);
+    }
+    
+    onRemove() {
+        this._todosService.remove(this.todo.id);
     }
 }

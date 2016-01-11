@@ -20,6 +20,8 @@ export class TodosListComponent {
     ngOnInit() {
         this._initProperties();
         this._todosService.socketListenOnCreate();
+        this._todosService.socketListenOnPatched();
+        this._todosService.socketListenOnRemove();
 
         // this.todosSocket.create({
         //     text: 'Created from client'
@@ -29,7 +31,7 @@ export class TodosListComponent {
     private _initProperties() {
         this._todosService.todosSubject
             .subscribe(
-            todos => { this.todos = todos }
+            todos => { this.todos = todos; console.log(this.todos); }
         );
         this._todosService.getTodos();
     }

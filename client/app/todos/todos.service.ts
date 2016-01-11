@@ -16,7 +16,6 @@ export class TodosService {
         this._app = feathers().configure(feathers.socketio(this._socket));
         this._todoSocket = this._app.service('todosController');
         this.todosSubject = new Rx.Subject();
-        this.currentTodo = new Rx.Subject();
     }
 
     getTodos() {
@@ -30,15 +29,17 @@ export class TodosService {
             if (err) {
                 console.log(err);
             } else {
+                console.log(todo);
                 this.currentTodo.next(todo);
             }
         });
     }
 
-    socketListenOnPatched(id: number) {
+    socketListenOnPatched() {
         this._todoSocket.on('patched', (todo: Todo) => {
-            console.log('patched');
-            this.getTodo(todo.id);
+            // console.log('patched');
+            // this.getTodo(todo.id);
+            this.getTodos();
         });
     }
 
@@ -48,19 +49,40 @@ export class TodosService {
             this.getTodos();
         });
     }
+    
+    socketListenOnRemove() {
+        this._todoSocket.on('removed', (todo: Todo) => {
+            this.getTodos(); 
+        });
+    }
 
     create(text: string) {
         this._todoSocket.create({
-            text: text
+            text: text,
+            done: false
+        }, {}, (err, todo) => {
+            if (err) {
+                console.log(err);
+            }
         });
     }
 
     patch(todo: Todo) {
         this._todoSocket.patch(todo.id, todo, {}, (err, todo: Todo) => {
+            // if (err) {
+            //     console.log(err);
+            // } else {
+            //     this.getTodo(todo.id);
+            // }
+        });
+    }
+    
+    remove(id: number) {
+        this._todoSocket.remove(id, {}, (err, todo) => {
             if (err) {
                 console.log(err);
             } else {
-                this.getTodo(todo.id);
+                this.getTodos();
             }
         });
     }

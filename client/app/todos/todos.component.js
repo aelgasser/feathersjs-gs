@@ -10,13 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('angular2/core');
 var router_1 = require('angular2/router');
 var todos_list_component_1 = require('./todos-list.component');
+var todos_service_1 = require('./todos.service');
 var TodosComponent = (function () {
     function TodosComponent() {
     }
     TodosComponent = __decorate([
         core_1.Component({
             template: "\n    <router-outlet></router-outlet>\n    ",
-            directives: [router_1.ROUTER_DIRECTIVES]
+            directives: [router_1.ROUTER_DIRECTIVES],
+            providers: [todos_service_1.TodosService]
         }),
         router_1.RouteConfig([
             { path: '/', name: 'Todos', component: todos_list_component_1.TodosListComponent, useAsDefault: true }
