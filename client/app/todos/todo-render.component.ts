@@ -14,14 +14,7 @@ export class TodoRenderComponent {
         private _todosService: TodosService
     ) { }
 
-    ngOnInit() {
-        // this._todosService.currentTodo.subscribe(
-        //     todo => { console.log(todo); },
-        //     err => console.log(err)
-        // );
-        // this._todosService.getTodo(this.todo.id);
-        // this._todosService.socketListenOnPatched(this.todo.id);
-    }
+    ngOnInit() {  }
 
     toggleDone() {
         this.todo.done = !this.todo.done;

@@ -10,7 +10,7 @@ export class TodosAddComponent {
 
     }
 
-    onSubmit(todo: string) {
+    onSubmit(todo: HTMLInputElement) {
         if (todo.value !== '') {
             this._todosService.create(todo.value);
             todo.value = '';

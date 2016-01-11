@@ -8,7 +8,6 @@ export class TodosService {
     private _app: any;
     private _todoSocket: any;
     public todosSubject: Rx.Subject<Todo[]>;
-    public currentTodo: Rx.Subject<Todo>;
 
     constructor(
     ) {
@@ -19,40 +18,37 @@ export class TodosService {
     }
 
     getTodos() {
-        this._todoSocket.find((error, todos: Todo[]) => {
-            this.todosSubject.next(todos);
-        });
+        // this._todoSocket.find((error, todos: Todo[]) => {
+        //     this.todosSubject.next(todos);
+        // });
+        
+        Rx.Observable.create((observer) => {
+            this._todoSocket.find((error, todos: Todo[]) => {
+                observer.next(todos);
+            });
+        }).subscribe(this.todosSubject);
     }
 
     getTodo(id: number) {
         this._todoSocket.get(id, {}, (err, todo: Todo) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(todo);
-                this.currentTodo.next(todo);
-            }
         });
     }
 
     socketListenOnPatched() {
         this._todoSocket.on('patched', (todo: Todo) => {
-            // console.log('patched');
-            // this.getTodo(todo.id);
             this.getTodos();
         });
     }
 
     socketListenOnCreate() {
         this._todoSocket.on('created', (todo: Todo) => {
-            console.log('created');
             this.getTodos();
         });
     }
-    
+
     socketListenOnRemove() {
         this._todoSocket.on('removed', (todo: Todo) => {
-            this.getTodos(); 
+            this.getTodos();
         });
     }
 
@@ -69,14 +65,9 @@ export class TodosService {
 
     patch(todo: Todo) {
         this._todoSocket.patch(todo.id, todo, {}, (err, todo: Todo) => {
-            // if (err) {
-            //     console.log(err);
-            // } else {
-            //     this.getTodo(todo.id);
-            // }
         });
     }
-    
+
     remove(id: number) {
         this._todoSocket.remove(id, {}, (err, todo) => {
             if (err) {

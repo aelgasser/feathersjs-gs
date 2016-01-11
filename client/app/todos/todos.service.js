@@ -17,35 +17,29 @@ var TodosService = (function () {
         this.todosSubject = new Rx.Subject();
     }
     TodosService.prototype.getTodos = function () {
+        // this._todoSocket.find((error, todos: Todo[]) => {
+        //     this.todosSubject.next(todos);
+        // });
         var _this = this;
-        this._todoSocket.find(function (error, todos) {
-            _this.todosSubject.next(todos);
-        });
+        Rx.Observable.create(function (observer) {
+            _this._todoSocket.find(function (error, todos) {
+                observer.next(todos);
+            });
+        }).subscribe(this.todosSubject);
     };
     TodosService.prototype.getTodo = function (id) {
-        var _this = this;
         this._todoSocket.get(id, {}, function (err, todo) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                console.log(todo);
-                _this.currentTodo.next(todo);
-            }
         });
     };
     TodosService.prototype.socketListenOnPatched = function () {
         var _this = this;
         this._todoSocket.on('patched', function (todo) {
-            // console.log('patched');
-            // this.getTodo(todo.id);
             _this.getTodos();
         });
     };
     TodosService.prototype.socketListenOnCreate = function () {
         var _this = this;
         this._todoSocket.on('created', function (todo) {
-            console.log('created');
             _this.getTodos();
         });
     };
@@ -67,11 +61,6 @@ var TodosService = (function () {
     };
     TodosService.prototype.patch = function (todo) {
         this._todoSocket.patch(todo.id, todo, {}, function (err, todo) {
-            // if (err) {
-            //     console.log(err);
-            // } else {
-            //     this.getTodo(todo.id);
-            // }
         });
     };
     TodosService.prototype.remove = function (id) {

@@ -22,10 +22,6 @@ export class TodosListComponent {
         this._todosService.socketListenOnCreate();
         this._todosService.socketListenOnPatched();
         this._todosService.socketListenOnRemove();
-
-        // this.todosSocket.create({
-        //     text: 'Created from client'
-        // });
     }
 
     private _initProperties() {

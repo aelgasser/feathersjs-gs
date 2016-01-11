@@ -22,9 +22,6 @@ var TodosListComponent = (function () {
         this._todosService.socketListenOnCreate();
         this._todosService.socketListenOnPatched();
         this._todosService.socketListenOnRemove();
-        // this.todosSocket.create({
-        //     text: 'Created from client'
-        // });
     };
     TodosListComponent.prototype._initProperties = function () {
         var _this = this;
