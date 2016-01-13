@@ -16,5 +16,5 @@ app.configure(feathers.rest())
 // app.service('todosController').create({
 //     text: 'Server Todo'
 // });
-app.listen(3000);
+app.listen(8080);
 //# sourceMappingURL=main.js.map
