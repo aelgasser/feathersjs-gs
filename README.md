@@ -8,6 +8,6 @@ tsd install
 node server/main.js
 ```
 
-Then go to http://localhost:3000
+Then go to http://localhost:8080
 
 // TODO -> Improve README
