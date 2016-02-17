@@ -10,6 +10,15 @@
         "noImplicitAny": false
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "typings/express",
+        "typings/mime",
+        "typings/mongodb",
+        "typings/node",
+        "typings/rx",
+        "typings/serve-static",
+        "typings/socket.io",
+        "typings/socket.io-client",
+        "custom-typings/body-parser"
     ]
 }
